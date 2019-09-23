@@ -8,6 +8,10 @@ public class Player {
         return currentChoice;
     }
 
+    public void setCurrentChoice(String str){
+        this.currentChoice = str;
+    }
+
     protected void addWin(){
         winCounter++;
     }
