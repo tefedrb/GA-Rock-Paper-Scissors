@@ -11,37 +11,41 @@ public class Game {
     public static void main(String[] args) {
         modeChoice(mode());
 
-        Player player1 = new Player();
+        Player player1 = new Player("Player 1");
+        Player player2 = null;
         if(mode.equals("player")){
-            Player player2 = new Player();
+            player2 = new Player("Player 2");
         } else {
-            Player player2 = new Computer();
+            player2 = new Computer("Computer");
         }
 
-        prompt();
-
+       prompt();
+       checkNavigation();
+       player1.collectChoice();
+       player2.collectChoice();
+       compare(player1, player2);
         // Players
         // User1 chooses
         // User2 chooses
         // Choices go into game logic playGame
     }
 
-    public static String mode() {
+    public static int mode() {
         System.out.println("Type in number of players (2 max)");
         // Can abstract this bit of code away
         Scanner choice = new Scanner(System.in);
-        String userin = choice.nextLine();
-        if (!userin.equals("1") || !userin.equals("2")) {
+        int userin = choice.nextInt();
+        if (userin != 1 && userin != 2) {
             System.out.println("Error: Input 1 or 2");
             mode();
         }
         return userin;
     }
 
-    public static void modeChoice(String str) {
-        if (str.equals("1")) {
+    public static void modeChoice(int input) {
+        if (input == 1 ) {
             mode = "computer";
-        } else if (str.equals("2")) {
+        } else if (input == 2) {
             mode = "player";
         }
     }
@@ -56,17 +60,17 @@ public class Game {
                 "2. Type 'history' to view your game history" + '\n' +
                 "3. Type 'quit' to stop playing."
         );
+        
         String name = prompt.nextLine().toLowerCase();
-        if(!name.equals("play") || !name.equals("history") || !name.equals("quit")){
-            System.out.println("Choose a valid input");
-            prompt();
-        }
         if(name.equals("play")){
             navigation = "play";
         } else if(name.equals("history")){
             navigation = "history";
         } else if(name.equals("quit")){
             navigation = "quit";
+        }  else {
+            System.out.println("Choose a valid input!");
+            prompt();
         }
     }
 
@@ -81,12 +85,64 @@ public class Game {
 
     }
 
-    public void checkNavigation(){
-        if(this.navigation.equals("quit")){
+    public static void checkNavigation(){
+        if(navigation.equals("quit")){
             // quit
-        } else if(this.navigation.equals("history")){
+        } else if(navigation.equals("history")){
             // history
         }
+    }
+
+    public static void compare(Player player1, Player player2){
+        // create a logic gate
+        String p1 = player1.getCurrentChoice();
+        String p2 = player2.getCurrentChoice();
+
+        if(p1.equals(p2)){
+            // tie
+            player1.addTie();
+        }
+
+        if(p1.equals("scissors")){
+            if(p2.equals("rock")){
+                // player 1 loses
+                player2.addWin();
+                player1.addLoss();
+            }
+            if(p2.equals("paper")){
+                // player 1 wins
+                player1.addWin();
+                player2.addLoss();
+            }
+        }
+        if(p1.equals("rock")){
+            if(p2.equals("scissors")){
+                // player 1 wins
+                player1.addWin();
+                player2.addLoss();
+            }
+            if(p2.equals("paper")){
+                // player 1 loses
+                player2.addWin();
+                player1.addLoss();
+            }
+        }
+        if(p1.equals("paper")){
+            if(p2.equals("rock")){
+                // player 1 wins
+                player1.addWin();
+                player2.addLoss();
+            }
+            if(p2.equals("scissors")){
+                // player 1 loses
+                player2.addWin();
+                player1.addLoss();
+            }
+        }
+
+        System.out.println(p1);
+        System.out.println(p2);
+        System.out.println("We Here!!");
     }
 
     public void setMode(String str){

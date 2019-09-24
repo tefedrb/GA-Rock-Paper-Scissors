@@ -1,15 +1,17 @@
 package RockPaperScissors;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Player {
-    private String name = "Player 1";
-    private String currentChoice;
-    private int winCounter;
-    private int lossCounter;
+    private static String name = null;
+    private static String currentChoice = null;
+    private int winCounter = 0;
+    private int lossCounter = 0;
+    private int tieCounter = 0;
 
-    public Player(){
-
+    public Player(String str){
+        this.name = str;
     }
 
     public String getCurrentChoice() {
@@ -36,18 +38,21 @@ public class Player {
         this.name = str;
     }
 
-    public String collectChoice() {
-        Scanner scan = new Scanner(System.in);
-        System.out.println("Type 'rock', 'paper', or 'scissors' to play.");
-        String[] choices = {"rock", "paper", "scissors"};
-        String input = scan.nextLine().toLowerCase();
-        for(int i = 0; i < choices.length; i++){
-            if(!input.equals(choices[i])){
-                System.out.println("Please choose a valid input.");
-                this.collectChoice();
-            }
-        }
-        return input;
+    protected void addTie(){
+        this.tieCounter++;
     }
 
+    public static void collectChoice() {
+        System.out.println("It's " + name + "'s turn.");
+        System.out.println("Type 'rock', 'paper', or 'scissors' to play.");
+        String[] choices = {"rock", "paper", "scissors"};
+        Scanner scan = new Scanner(System.in);
+        String input = scan.nextLine().toLowerCase();
+        if (Arrays.asList(choices).contains(input)) {
+            currentChoice = input;
+        } else {
+            System.out.println("Please enter a valid input");
+            collectChoice();
+        }
+    }
 }
