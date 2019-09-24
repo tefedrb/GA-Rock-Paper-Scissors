@@ -4,8 +4,8 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class Player {
-    private static String name = null;
-    private static String currentChoice = null;
+    private String name = null;
+    private String currentChoice = null;
     private int winCounter = 0;
     private int lossCounter = 0;
     private int tieCounter = 0;
@@ -24,6 +24,7 @@ public class Player {
 
     protected void addWin(){
         winCounter++;
+        System.out.println(this.name + "Wins this one!");
     }
 
     protected void addLoss(){
@@ -40,16 +41,17 @@ public class Player {
 
     protected void addTie(){
         this.tieCounter++;
+        System.out.println("It's a tie!");
     }
 
-    public static void collectChoice() {
-        System.out.println("It's " + name + "'s turn.");
+    public void collectChoice() {
+        System.out.println("It's " + this.name + "'s turn.");
         System.out.println("Type 'rock', 'paper', or 'scissors' to play.");
         String[] choices = {"rock", "paper", "scissors"};
         Scanner scan = new Scanner(System.in);
         String input = scan.nextLine().toLowerCase();
         if (Arrays.asList(choices).contains(input)) {
-            currentChoice = input;
+            this.currentChoice = input;
         } else {
             System.out.println("Please enter a valid input");
             collectChoice();

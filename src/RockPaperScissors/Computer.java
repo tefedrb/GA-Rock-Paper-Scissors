@@ -7,4 +7,6 @@ public class Computer extends Player {
     public static void main(){
 
     }
+
+    public void
 }
