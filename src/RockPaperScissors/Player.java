@@ -22,9 +22,11 @@ public class Player {
         this.currentChoice = str;
     }
 
-    protected void addWin(){
+    protected String addWin(){
         winCounter++;
-        System.out.println(this.name + "Wins this one!");
+        String win = this.name + "Wins this one!";
+        System.out.println(win);
+        return win;
     }
 
     protected void addLoss(){

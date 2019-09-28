@@ -9,8 +9,10 @@ public class Game {
     private static String navigation = "";
 
     public static void main(String[] args) {
+        History history = new History();
         modeChoice(mode());
 
+        // Players
         Player player1 = new Player("Player 1");
         Player player2 = null;
         if(mode.equals("player")){
@@ -21,25 +23,25 @@ public class Game {
 
        prompt();
        checkNavigation();
-       player1.collectChoice();
-       player2.collectChoice();
-       compare(player1, player2);
-        // Players
         // User1 chooses
+       player1.collectChoice();
         // User2 chooses
-        // Choices go into game logic playGame
+       player2.collectChoice();
+       // Find winner
+       findWinner(player1, player2);
+
     }
 
     public static int mode() {
         System.out.println("Type in number of players (2 max)");
         // Can abstract this bit of code away
         Scanner choice = new Scanner(System.in);
-        int userin = choice.nextInt();
-        if (userin != 1 && userin != 2) {
+        int userIn = choice.nextInt();
+        if (userIn != 1 && userIn != 2) {
             System.out.println("Error: Input 1 or 2");
             mode();
         }
-        return userin;
+        return userIn;
     }
 
     public static void modeChoice(int input) {
@@ -74,16 +76,6 @@ public class Game {
         }
     }
 
-    public void playGame() {
-        // Start logic
-        // Writing out game logic
-        // if user input
-        // if computer input
-        // collect user / computer inputs in map
-        Scanner scan = new Scanner(System.in);
-        String firstIn = scan.nextLine().toLowerCase();
-
-    }
 
     public static void checkNavigation(){
         if(navigation.equals("quit")){
@@ -93,56 +85,34 @@ public class Game {
         }
     }
 
-    public static void compare(Player player1, Player player2){
+    public static int compare(String p1, String p2){
+        int toNum = 1;
+        p1 = p1.toLowerCase();
+        p2 = p2.toLowerCase();
+        if((p1.equals("rock") && p2.equals("paper")) || (p1.equals("paper") && p2.equals("scissors")) || (p1.equals("scissors") && p2.equals("rock"))){
+            toNum = 0;
+        } else if(p1.equals(p2)){
+            toNum = 2;
+        }
+        return toNum;
+    }
+
+    public static void findWinner(Player player1, Player player2){
         // create a logic gate
         String p1 = player1.getCurrentChoice();
         String p2 = player2.getCurrentChoice();
-
-        if(p1.equals(p2)){
-            // tie
+        int check = compare(p1, p2);
+        if(check == 1){
+            player1.addWin();
+            player2.addLoss();
+        } else if(check == 2){
             player1.addTie();
+        } else if(check == 0){
+            player1.addLoss();
+            player2.addWin();
         }
-
-        if(p1.equals("scissors")){
-            if(p2.equals("rock")){
-                // player 1 loses
-                player2.addWin();
-                player1.addLoss();
-            }
-            if(p2.equals("paper")){
-                // player 1 wins
-                player1.addWin();
-                player2.addLoss();
-            }
-        }
-        if(p1.equals("rock")){
-            if(p2.equals("scissors")){
-                // player 1 wins
-                player1.addWin();
-                player2.addLoss();
-            }
-            if(p2.equals("paper")){
-                // player 1 loses
-                player2.addWin();
-                player1.addLoss();
-            }
-        }
-        if(p1.equals("paper")){
-            if(p2.equals("rock")){
-                // player 1 wins
-                player1.addWin();
-                player2.addLoss();
-            }
-            if(p2.equals("scissors")){
-                // player 1 loses
-                player2.addWin();
-                player1.addLoss();
-            }
-        }
-
         System.out.println(p1);
         System.out.println(p2);
-        System.out.println("We Here!!");
     }
 
     public void setMode(String str){
