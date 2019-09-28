@@ -24,7 +24,7 @@ public class Player {
 
     protected String addWin(){
         winCounter++;
-        String win = this.name + "Wins this one!";
+        String win = this.name + " wins this round!";
         System.out.println(win);
         return win;
     }
@@ -41,9 +41,11 @@ public class Player {
         this.name = str;
     }
 
-    protected void addTie(){
+    protected String addTie(){
         this.tieCounter++;
-        System.out.println("It's a tie!");
+        String output = "It's a tie!";
+        System.out.println(output);
+        return output;
     }
 
     public void collectChoice() {

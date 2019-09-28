@@ -2,15 +2,14 @@ package RockPaperScissors;
 
 import RockPaperScissors.Computer;
 
+import java.sql.Array;
 import java.util.Scanner;
 
 public class Game {
-    private static String mode = "";
-    private static String navigation = "";
 
     public static void main(String[] args) {
         History history = new History();
-        modeChoice(mode());
+        String mode = modeChoice(mode());
 
         // Players
         Player player1 = new Player("Player 1");
@@ -21,15 +20,13 @@ public class Game {
             player2 = new Computer("Computer");
         }
 
-       prompt();
-       checkNavigation();
+       history.returnHistory(checkNavigation(prompt()));
         // User1 chooses
-       player1.collectChoice();
+        player1.collectChoice();
         // User2 chooses
-       player2.collectChoice();
-       // Find winner
-       findWinner(player1, player2);
-
+        player2.collectChoice();
+        // Find & Save winner
+        history.saveRound(findWinner(player1, player2));
     }
 
     public static int mode() {
@@ -44,15 +41,17 @@ public class Game {
         return userIn;
     }
 
-    public static void modeChoice(int input) {
+    public static String modeChoice(int input) {
+        String mode = null;
         if (input == 1 ) {
             mode = "computer";
         } else if (input == 2) {
             mode = "player";
         }
+        return mode;
     }
 
-    public static void prompt() {
+    public static String prompt() {
         // Here we will have the user choose 1v1 or 1vC
         // Collect user input
         Scanner prompt = new Scanner(System.in);
@@ -62,30 +61,30 @@ public class Game {
                 "2. Type 'history' to view your game history" + '\n' +
                 "3. Type 'quit' to stop playing."
         );
-        
+        String output = null;
         String name = prompt.nextLine().toLowerCase();
         if(name.equals("play")){
-            navigation = "play";
+            output = "play";
         } else if(name.equals("history")){
-            navigation = "history";
+            output = "history";
         } else if(name.equals("quit")){
-            navigation = "quit";
+            output = "quit";
         }  else {
             System.out.println("Choose a valid input!");
             prompt();
         }
+        return output;
     }
 
-
-    public static void checkNavigation(){
-        if(navigation.equals("quit")){
-            // quit
-        } else if(navigation.equals("history")){
-            // history
+    public static String checkNavigation(String str){
+        str = str.toLowerCase();
+        if(str.equals("quit")){
+            System.exit(0);
         }
+        return str;
     }
 
-    public static int compare(String p1, String p2){
+    public static int compareChoices(String p1, String p2){
         int toNum = 1;
         p1 = p1.toLowerCase();
         p2 = p2.toLowerCase();
@@ -97,34 +96,26 @@ public class Game {
         return toNum;
     }
 
-    public static void findWinner(Player player1, Player player2){
+    public static String[] findWinner(Player player1, Player player2){
         // create a logic gate
         String p1 = player1.getCurrentChoice();
         String p2 = player2.getCurrentChoice();
-        int check = compare(p1, p2);
+        int check = compareChoices(p1, p2);
+        String[] output = new String[3];
         if(check == 1){
-            player1.addWin();
+            output[0] = player1.addWin();
             player2.addLoss();
         } else if(check == 2){
-            player1.addTie();
+            output[0] = player1.addTie();;
         } else if(check == 0){
+            output[0] = player2.addWin();
             player1.addLoss();
-            player2.addWin();
         }
-        System.out.println(p1);
-        System.out.println(p2);
-    }
-
-    public void setMode(String str){
-        this.mode = str;
-    }
-
-    public static void history () {
-
-    }
-
-    public static void quit () {
-
+        output[1] = p1;
+        output[2] = p2;
+        System.out.println(player1.getName() + ": " + p1);
+        System.out.println(player2.getName() + ": " + p2);
+        return output;
     }
 }
 
