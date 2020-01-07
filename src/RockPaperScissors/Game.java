@@ -1,8 +1,4 @@
 package RockPaperScissors;
-
-import RockPaperScissors.Computer;
-
-import java.sql.Array;
 import java.util.Scanner;
 
 public class Game {
@@ -54,7 +50,7 @@ public class Game {
     public static void playGame(History history, Player player1, Player player2){
         // This right here needs to be refactored - mainMenu shouldn't return anything
         mainMenu(history, player1, player2);
-//        history.returnHistory();
+        //  history.returnHistory();
         System.out.println("\n");
         // User1 chooses
         player1.collectChoice();
@@ -72,17 +68,16 @@ public class Game {
         System.out.println("Main Menu" + '\n' +
                 "=====" + '\n' +
                 "1. Type 'play' to play." + '\n' +
-                "2. Type 'history' to view your game history" + '\n' +
-                "3. Type 'quit' to stop playing."
+                "2. Type 'stats' to view stats." + '\n' +
+                "3. Type 'history' to view your game history" + '\n' +
+                "4. Type 'quit' to stop playing."
         );
         String name = mainMenu.nextLine().toLowerCase();
         if(name.equals("play")){
-//            output = "play";
+
         } else if(name.equals("history")){
-//            output = "history";
-//            Scanner testScanner = new Scanner(System.in);
+            System.out.println(" ");
             history.returnHistory("history");
-            // This holds the user
             mainMenu.nextLine();
             mainMenu(history, player, player2);
         } else if(name.equals("quit")){
@@ -90,7 +85,6 @@ public class Game {
         } else if(name.equals("stats")){
             player.getStats();
             player2.getStats();
-            System.out.println('\n');
             System.out.println("HIT RETURN TO GO BACK TO MAIN MENU");
             mainMenu.nextLine();
             mainMenu(history, player, player2);
@@ -127,6 +121,7 @@ public class Game {
         String player1Name = player1.getName();
         String player2Name = player2.getName();
         output[0] = "< " + player1Name + " vs " + player2Name + " >";
+        System.out.println(" ");
         if(check == 1){
             output[1] = player1.addWin();
             player2.addLoss();
@@ -138,8 +133,13 @@ public class Game {
         }
         output[2] = p1Choice;
         output[3] = p2Choice;
+        System.out.println(" ");
         System.out.println(player1.getName() + " chose: " + p1Choice);
         System.out.println(player2.getName() + " chose: " + p2Choice);
+        System.out.println("============================");
+        Scanner pause = new Scanner(System.in);
+        System.out.println("HIT ENTER TO CONTINUE");
+        pause.nextLine();
         System.out.println("\n");
         return output;
     }
