@@ -9,24 +9,33 @@ public class Game {
 
     public static void main(String[] args) {
         History history = new History();
+        playGame(history);
+    }
+
+    public static void playGame(History history){
+        history.returnHistory(prompt());
+
         String mode = modeChoice(mode());
 
         // Players
+        // Player One always gets created
         Player player1 = new Player("Player 1");
+        // Player two can be human or computer, so start with null
         Player player2 = null;
+        // Then have a conditional check what mode was chosen by user
+        // Have the the second player assigned to be a computer or another human
         if(mode.equals("player")){
             player2 = new Player("Player 2");
         } else {
             player2 = new Computer("Computer");
         }
-
-       history.returnHistory(checkNavigation(prompt()));
         // User1 chooses
         player1.collectChoice();
         // User2 chooses
         player2.collectChoice();
         // Find & Save winner
         history.saveRound(findWinner(player1, player2));
+        playGame(history);
     }
 
     public static int mode() {
@@ -55,13 +64,13 @@ public class Game {
         // Here we will have the user choose 1v1 or 1vC
         // Collect user input
         Scanner prompt = new Scanner(System.in);
+        String output = null;
         System.out.println("Main Menu" + '\n' +
                 "=====" + '\n' +
                 "1. Type 'play' to play." + '\n' +
                 "2. Type 'history' to view your game history" + '\n' +
                 "3. Type 'quit' to stop playing."
         );
-        String output = null;
         String name = prompt.nextLine().toLowerCase();
         if(name.equals("play")){
             output = "play";
@@ -69,6 +78,7 @@ public class Game {
             output = "history";
         } else if(name.equals("quit")){
             output = "quit";
+            System.exit(0);
         }  else {
             System.out.println("Choose a valid input!");
             prompt();
@@ -76,13 +86,15 @@ public class Game {
         return output;
     }
 
-    public static String checkNavigation(String str){
-        str = str.toLowerCase();
-        if(str.equals("quit")){
-            System.exit(0);
-        }
-        return str;
-    }
+//    public static String checkNavigation2(String str){
+//        if(str.equals("loop")){
+//            Scanner choice = new Scanner(System.in);
+//            String decision = choice.nextLine().toLowerCase();
+//            if(decision.equals('y')){
+//
+//            }
+//        }
+//    }
 
     public static int compareChoices(String p1, String p2){
         int toNum = 1;
@@ -98,23 +110,23 @@ public class Game {
 
     public static String[] findWinner(Player player1, Player player2){
         // create a logic gate
-        String p1 = player1.getCurrentChoice();
-        String p2 = player2.getCurrentChoice();
-        int check = compareChoices(p1, p2);
+        String p1Choice = player1.getCurrentChoice();
+        String p2Choice = player2.getCurrentChoice();
+        int check = compareChoices(p1Choice, p2Choice);
         String[] output = new String[3];
         if(check == 1){
             output[0] = player1.addWin();
             player2.addLoss();
         } else if(check == 2){
-            output[0] = player1.addTie();;
+            output[0] = player1.addDraw();;
         } else if(check == 0){
             output[0] = player2.addWin();
             player1.addLoss();
         }
-        output[1] = p1;
-        output[2] = p2;
-        System.out.println(player1.getName() + ": " + p1);
-        System.out.println(player2.getName() + ": " + p2);
+        output[1] = p1Choice;
+        output[2] = p2Choice;
+        System.out.println(player1.getName() + " chose: " + p1Choice);
+        System.out.println(player2.getName() + " chose: " + p2Choice);
         return output;
     }
 }

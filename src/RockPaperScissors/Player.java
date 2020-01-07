@@ -33,17 +33,17 @@ public class Player {
         lossCounter++;
     }
 
-    String getName() {
+    public String getName() {
         return this.name;
     }
 
-    void setName(String str){
+    public void setName(String str){
         this.name = str;
     }
 
-    protected String addTie(){
+    protected String addDraw(){
         this.tieCounter++;
-        String output = "It's a tie!";
+        String output = "It's a draw!";
         System.out.println(output);
         return output;
     }

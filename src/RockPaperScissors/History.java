@@ -10,7 +10,7 @@ public class History {
         this.rounds.add(round);
     }
 
-    public void returnHistory(String userIn) {
+    public String returnHistory(String userIn) {
         userIn = userIn.toLowerCase();
         if (userIn.equals("history")){
                 AtomicInteger roundNum = new AtomicInteger(1);
@@ -21,7 +21,9 @@ public class History {
                 System.out.println("============================");
                 roundNum.getAndIncrement();
             });
+            return "loop";
         }
+        return "No History";
     }
 
 //    public void setRoundNum(int num){
