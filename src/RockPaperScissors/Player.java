@@ -18,8 +18,20 @@ public class Player {
         return currentChoice;
     }
 
-    public void setCurrentChoice(String str){
-        this.currentChoice = str;
+    public void setCurrentChoice(String choice){
+        this.currentChoice = choice;
+    }
+
+    public int getWinCounter(){
+        return this.winCounter;
+    }
+
+    public int getLossCounter(){
+        return this.lossCounter;
+    }
+
+    public int getTieCounter(){
+        return this.tieCounter;
     }
 
     protected String addWin(){
@@ -30,7 +42,7 @@ public class Player {
     }
 
     protected void addLoss(){
-        lossCounter++;
+        this.lossCounter++;
     }
 
     public String getName() {
@@ -50,15 +62,24 @@ public class Player {
 
     public void collectChoice() {
         System.out.println("It's " + this.name + "'s turn.");
-        System.out.println("Type 'rock', 'paper', or 'scissors' to play.");
+        System.out.println("Type 'rock', 'paper', or 'scissors'");
         String[] choices = {"rock", "paper", "scissors"};
         Scanner scan = new Scanner(System.in);
         String input = scan.nextLine().toLowerCase();
         if (Arrays.asList(choices).contains(input)) {
-            this.currentChoice = input;
+            this.setCurrentChoice(input);
         } else {
             System.out.println("Please enter a valid input");
             collectChoice();
         }
+    }
+
+    public void getStats(){
+        System.out.println(this.getName() + " wins: " + this.getWinCounter()
+            + '\n' +
+                " losses: " + this.getLossCounter()
+                + '\n' +
+                " ties: " + this.getTieCounter()
+        );
     }
 }

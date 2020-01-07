@@ -20,7 +20,6 @@ public class Computer extends Player {
     public void collectChoice(){
         String[] responses = {"rock", "paper", "scissors"};
         int random2 = (int) (Math.random() * 3);
-        System.out.println(random2);
         currentChoice = responses[random2];
     }
 }
